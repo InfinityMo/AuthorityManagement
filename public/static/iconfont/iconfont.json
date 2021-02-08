@@ -1,0 +1,65 @@
+{
+  "id": "2316847",
+  "name": "权限管理系统",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19351017",
+      "name": "finish-32",
+      "font_class": "finish-32",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "19351018",
+      "name": "add-green-12",
+      "font_class": "add-green-12",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "19351019",
+      "name": "add-white-12",
+      "font_class": "add-white-12",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "19351020",
+      "name": "delete-17",
+      "font_class": "delete-17",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "19351021",
+      "name": "shop-16",
+      "font_class": "shop-16",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "19351022",
+      "name": "success-80",
+      "font_class": "success-80",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "19351023",
+      "name": "staff-16",
+      "font_class": "staff-16",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "19351024",
+      "name": "information-16",
+      "font_class": "information-16",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    }
+  ]
+}
