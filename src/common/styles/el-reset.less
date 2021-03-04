@@ -233,12 +233,17 @@
 
 // message-box
 .el-message-box__wrapper {
-  z-index: 2600 !important;
+  z-index: 3600 !important;
 }
 
 // drawer
 .el-drawer__wrapper {
-  z-index: 2503 !important;
+  z-index: 3500 !important;
+}
+
+.drawer-inner-wrap {
+  height: calc(100vh - 82px);
+  box-sizing: border-box;
 }
 
 // 去除聚焦时的边框
@@ -259,6 +264,15 @@
   padding: 9px 15px;
 }
 
+.el-button--default {
+  color: #2bb8bd;
+  border-color: #2bb8bd;
+}
+
+.el-button--default:hover {
+  border-color: #2bb8bd;
+}
+
 .el-button--primary:focus,
 .el-button--primary:hover {
   color: #fff;
@@ -271,6 +285,10 @@
 // 弹窗style rest
 .el-dialog {
   border-radius: 10px;
+}
+
+.drawer-cover-dialog.el-dialog__wrapper {
+  z-index: 2502 !important;
 }
 
 .el-dialog__wrapper {

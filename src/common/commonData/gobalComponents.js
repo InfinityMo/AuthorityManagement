@@ -8,6 +8,6 @@ import drawerView from '@/components/drawerMode/drawerView'
 Vue.component('select-search', selectSearch)
 Vue.component('standard-table', standardTable)
 Vue.component('icon', icon)
-Vue.component('drawer', drawer)
+Vue.component('Drawer', drawer)
 Vue.component('drawer-edit', drawerEdit)
 Vue.component('drawer-view', drawerView)

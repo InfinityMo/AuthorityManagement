@@ -2,6 +2,7 @@
   <div class="drawer-wrap">
     <el-drawer :title="title"
                @open="drawerOpen"
+               @closed="drawerClosed"
                :destroy-on-close="true"
                :size="width"
                :wrapperClosable="wrapperClosable"
@@ -41,17 +42,35 @@ export default {
 
   },
   methods: {
+    // 手动关闭drawer
+    manualCloseDrawer () {
+      if (!this.wrapperClosable) {
+        this.$confirm('还有未保存的数据，确定关闭吗？', '提示', {
+          customClass: 'drawer-message-box'
+        }).then(_ => {
+          this.$emit('drawerClosed')
+        }).catch(_ => {
+
+        })
+      } else {
+        this.$emit('drawerClosed')
+      }
+    },
     drawerOpen () {
       this.drawerShow = true
     },
-
+    drawerClosed () {
+      this.$emit('drawerClosed')
+    },
     beforeClose (done) {
       if (!this.wrapperClosable) {
-        this.$confirm('还有未保存的编辑，确定关闭吗？', '提示', {
+        this.$confirm('还有未保存的数据，确定关闭吗？', '提示', {
           customClass: 'drawer-message-box'
         }).then(_ => {
           done()
-        }).catch(_ => { })
+        }).catch(_ => {
+          done()
+        })
       } else {
         done()
       }
@@ -62,6 +81,7 @@ export default {
 <style lang="less" scoped>
 /deep/.el-drawer__header {
   margin-bottom: 20px;
+  color: #333;
 }
 .split-line {
   margin: 20px 0 0 0;

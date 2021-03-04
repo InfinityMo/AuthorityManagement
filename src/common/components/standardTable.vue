@@ -45,7 +45,7 @@
                    :current-page="pageChange.pageNum"
                    :page-sizes="[5, 10, 20, 50, 100]"
                    :page-size="pageChange.pageSize"
-                   layout="total, prev, pager, next, sizes, jumper"
+                   :layout="paginationLayout.join(',')"
                    :total="total">
     </el-pagination>
   </div>
@@ -73,6 +73,12 @@ export default {
       type: Object || Boolean,
       default: () => { }
     },
+    // 控制分页显示的组件布局
+    paginationLayout: {
+      type: Array,
+      default: () => ['total', 'prev', 'pager', 'next', 'sizes', 'jumper']
+    },
+    // 是否隐藏分页
     hidePagination: {
       type: Boolean,
       default: false

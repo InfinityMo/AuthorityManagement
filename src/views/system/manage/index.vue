@@ -35,21 +35,54 @@
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <DialogView :modalTitle="'系统信息'"
+    <!-- 系统信息  -->
+    <DialogView modalTitle="系统信息"
                 :viewId="viewId"
                 :modalShow="viewShow"
-                @viewModalCancel="viewModalCancel" />
+                :class="{'drawer-cover-dialog':drawerShow}"
+                v-if="viewShow"
+                @viewModalCancel="viewModalCancel"
+                @openRoleDrawer="openRoleDrawer" />
+    <Drawer :wrapperClosable="true"
+            width="366px"
+            :title="roleTitle"
+            @drawerClosed="drawerClosed"
+            ref="roleDrawer">
+      <div slot="content">
+        <roleContent :roleId="roleId" />
+      </div>
+    </Drawer>
+    <DialogWarrant modalTitle="角色授权"
+                   :viewId="viewId"
+                   :modalShow="warrantShow"
+                   :class="{'drawer-cover-dialog':drawerShow}"
+                   v-if="warrantShow"
+                   @viewModalCancel="warrantModalCancel"
+                   @openRoleDrawer="openRoleDrawer"
+                   @openWarrantDrawer="openWarrantDrawer" />
+    <Drawer :wrapperClosable="false"
+            width="310px"
+            v-if="warrantDrawer"
+            :title="`${roleTitle}——角色授权`"
+            @drawerClosed="drawerClosed"
+            ref="warrant">
+      <div slot="content">
+        <warrant @warrantClose="warrantClose" />
+      </div>
+    </Drawer>
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/dealTable'
 import { columnsData } from './columnsData.js'
 import DialogView from './dialogView'
+import DialogWarrant from './dialogWarrant'
 import { tableSearchForm } from './searchForm'
-
+import roleContent from './roleContent'
+import warrant from './warrant'
 export default {
   mixins: [tableMixin],
-  components: { DialogView },
+  components: { DialogView, DialogWarrant, roleContent, warrant },
   data () {
     return {
       searchForm: JSON.parse(JSON.stringify(tableSearchForm)),
@@ -64,19 +97,15 @@ export default {
           updateTime: '2020-01-30 18:08:09'
         }
       ],
+      roleTitle: '',
+      roleId: '',
       modalShow: false,
+      warrantShow: false, // 角色授权弹窗
+      warrantDrawer: false, // 角色授权抽屉
       viewShow: false,
+      drawerShow: false,
       viewId: '',
       addEditId: '' // 编辑时存在id，新增时id为空
-    }
-  },
-  watch: {
-    'searchForm.RowGuid' (newVal, oldVal) {
-      if (newVal.length && newVal.length > 0) {
-        this.tipContent = this.selectOption.filter(item => item.value === this.searchForm.RowGuid[0])[0].label
-      } else {
-        this.tipContent = ''
-      }
     }
   },
   created () {
@@ -84,66 +113,57 @@ export default {
   },
   mounted () {
     this.getTableData() // 获取列表数据
+    // this.openRoleDrawer()
   },
   methods: {
-    getTableData () {
-      this.$request.post('./a')
+    // 查询
+    queryHandel () {
+      this.queryFrom = {
+        RowGuid: this.searchForm.RowGuid[0] || ''
+      }
+      this.getTableData()
     },
-    getSelects () {
-      this._getSelectData(1).then(res => {
-        this.selectOption = res
-      }) // 获取下拉框数据
-    },
-
-    // 新增
+    // 新增系统
     addHandle () {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.addEditId = ''
-        this.modalTitle = '新增店铺'
-        this.modalShow = true
-      })
+      this.$router.push('/system/add')
     },
+    // 列表
+    getTableData () {
+      // this.$request.post('./a')
+    },
+    // 表格分页的变化
+    tableChange (changeParams) {
+      this.PAGING.pageSize = changeParams.pageSize
+      this.PAGING.pageNum = changeParams.pageNum
+      this.getTableData()
+    },
+    // 查看系统信息
     toView (scoped) {
       const { row } = scoped
       this.viewShow = true
       this.viewId = row.id
     },
+    // 系统信息弹窗-close
     viewModalCancel () {
       this.viewShow = false
     },
+    // 角色详情抽屉-open
+    openRoleDrawer (roleId, roleName) {
+      this.drawerShow = true
+      this.roleTitle = roleName || ''
+      this.roleId = roleId
+      this.$refs.roleDrawer.drawerOpen()
+    },
+    // 角色详情抽屉-close
+    drawerClosed () {
+      this.drawerShow = false
+      this.warrantDrawer = false
+    },
+    // 编辑
     editMoadl (scoped) {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.modalShow = true
-        const { row } = scoped
-        this.addEditId = row.RowGuid
-        this.modalTitle = '编辑店铺'
-      })
+
     },
-    // modal确认
-    modalConfirm () {
-      this.modalShow = false
-      this.brandArr = []
-      this.selectOption = []
-      this.getTableData()
-      this.getSelects()
-    },
-    // moadl关闭
-    modalCancel () {
-      this.brandArr = []
-      this.modalShow = false
-    },
+    // 删除
     deleteHandle (scoped) {
       const { row } = scoped
       this.$request.post('/shopDelete', {
@@ -159,17 +179,37 @@ export default {
         }
       })
     },
-    queryHandel () {
-      this.queryFrom = {
-        RowGuid: this.searchForm.RowGuid[0] || ''
-      }
-      this.getTableData()
+    // 角色编辑
+    roleEdit (scoped) {
+      const { row } = scoped
+      this.$router.push({
+        name: 'SystemRole',
+        params: { id: row.id }
+      })
     },
-    // 表格分页的变化
-    tableChange (changeParams) {
-      this.PAGING.pageSize = changeParams.pageSize
-      this.PAGING.pageNum = changeParams.pageNum
-      this.getTableData()
+    // 角色授权
+    warrant (scoped) {
+      const { row } = scoped
+      this.viewId = row.id
+      this.warrantShow = true
+    },
+    // 角色授权弹窗-close
+    warrantModalCancel () {
+      this.warrantShow = false
+    },
+    // 角色授权抽屉-open
+    openWarrantDrawer (roleId, roleName) {
+      this.drawerShow = true
+      this.warrantDrawer = true
+      this.roleTitle = roleName || ''
+      this.roleId = roleId
+      this.$nextTick(() => {
+        this.$refs.warrant.drawerOpen()
+      })
+    },
+    // 角色授权抽屉-close
+    warrantClose () {
+      this.$refs.warrant.manualCloseDrawer()
     }
   }
 }

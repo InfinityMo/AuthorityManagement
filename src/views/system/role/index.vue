@@ -23,12 +23,10 @@
         <div>
           <el-button @click="saveHandle"
                      v-show="dynamicForm.dynamicData.length>0"
-                     type="primary"
-                     plain>保存</el-button>
-          <el-button type="primary"
-                     @click="addHandle"
+                     type="primary">保存</el-button>
+          <el-button @click="addHandle"
                      v-show="systemValue.length>0">
-            <icon type="icon-add-white-14"
+            <icon type="icon-add-green-14"
                   :padding="[0,5,0,0]" />新增角色
           </el-button>
         </div>
@@ -154,6 +152,8 @@ export default {
     // this.getSelects()
   },
   mounted () {
+    console.log(this.$route)
+    console.log(this.$route.params.id)
     // this.getTableData() // 获取列表数据
   },
   methods: {
