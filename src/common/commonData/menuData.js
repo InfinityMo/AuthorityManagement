@@ -70,6 +70,12 @@ export default [
   },
   {
     pId: '3',
+    pTitle: '部门管理',
+    icon: 'icon-staff-16',
+    pPath: '/department/deptManage'
+  },
+  {
+    pId: '4',
     pTitle: '店铺管理',
     icon: 'icon-shop-16',
     pPath: '/shop/shopManage'

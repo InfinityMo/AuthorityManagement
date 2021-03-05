@@ -1,34 +1,34 @@
 <template>
   <div class="page">
     <div class="search-wrap">
-      <el-form class="demo-form-inline"
-               ref="searchForm">
-        <el-col :span="9">
-          <el-form-item label="店铺名称：">
-            <el-tooltip class="tooltip-reset"
-                        effect="dark"
-                        :disabled="tipContent ? false:true"
-                        :content="tipContent"
-                        placement="top-start">
-              <el-cascader v-model="searchForm.RowGuid"
-                           placeholder="请选择店铺名称"
-                           popper-class="reset-casc"
-                           :options="selectOption"
-                           filterable
-                           clearable>
-                <span slot-scope="{ data }">
-                  <el-tooltip effect="dark"
-                              :content="data.label"
-                              placement="left">
-                    <span>{{data.label}}</span>
-                  </el-tooltip>
-                </span>
-              </el-cascader>
-            </el-tooltip>
+      <el-form class="search-form-inline"
+               :model="queryFrom"
+               ref="searchForm"
+               label-width="70px">
+        <el-col :span="8">
+          <el-form-item label="工号："
+                        label-width="42px"
+                        prop="staffId">
+            <el-input v-model="queryFrom.staffId"
+                      placeholder="请输入工号"
+                      autocomplete="off">
+            </el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="3">
-          <el-form-item class="search-btn">
+        <el-col :span="8">
+          <el-form-item label="姓名："
+                        label-width="42px"
+                        prop="staffName">
+            <el-input v-model="queryFrom.staffName"
+                      placeholder="请输入姓名"
+                      autocomplete="off">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8"
+                class="search-btn">
+          <el-form-item>
+            <el-button @click="_resetForm('searchForm')">重置</el-button>
             <el-button type="primary"
                        @click="queryHandel">查询</el-button>
           </el-form-item>
@@ -36,38 +36,23 @@
       </el-form>
     </div>
     <div class="table-wrap">
-      <div class="flex-item-center table-info">
-        <h4>店铺信息列表</h4>
-        <el-button type="primary"
-                   @click="addHandle">新增</el-button>
-      </div>
-      <standard-table :dataSource="tableData"
-                      :columns="columns"
-                      :pagination="PAGING"
-                      @tableChange="tableChange" />
+
     </div>
-    <Dialog :modalTitle="modalTitle"
-            :addEditId="addEditId"
-            :brandArr="brandArr"
-            v-if="modalShow"
-            :modalShow="modalShow"
-            @modalCancel="modalCancel"
-            @modalConfirm="modalConfirm" />
+
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/dealTable'
 import { columnsData } from './columnsData.js'
-import Dialog from './dialog'
-import { tableSearchForm } from './searchForm'
+import { queryForm } from './searchForm'
 
 export default {
   mixins: [tableMixin],
-  components: { Dialog },
+
   data () {
     return {
       tipContent: '',
-      searchForm: JSON.parse(JSON.stringify(tableSearchForm)),
+      searchForm: queryForm,
       queryFrom: { RowGuid: '' },
       columns: columnsData(this.$createElement, this),
       tableData: [],
@@ -88,41 +73,26 @@ export default {
     }
   },
   created () {
-    this.getSelects()
+    // this.getSelects()
   },
   mounted () {
-    this.getTableData() // 获取列表数据
+    // this.getTableData() // 获取列表数据
   },
   methods: {
+    getTableData () {
+      this.$request.post('./')
+    },
     getSelects () {
       this._getSelectData(1).then(res => {
         this.selectOption = res
       }) // 获取下拉框数据
     },
-    getTableData () {
-      this.$request.post('/shopSelect', {
-        pageNum: this.PAGING.pageNum,
-        pageSize: this.PAGING.pageSize,
-        ...this.queryFrom
-      }).then(res => {
-        const resData = res.data.result || []
-        this.tableData = resData
-        this.PAGING.total = res.data.total
-      })
-    },
+
     // 新增
     addHandle () {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.addEditId = ''
-        this.modalTitle = '新增店铺'
-        this.modalShow = true
-      })
+      this.addEditId = ''
+      this.modalTitle = '新增员工'
+      this.modalShow = true
     },
     editMoadl (scoped) {
       this._getSelectData(6).then(res => {
@@ -182,5 +152,5 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import "../../common/styles/page-table";
+@import "~@/common/styles/page-table";
 </style>

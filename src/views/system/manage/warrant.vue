@@ -18,7 +18,8 @@
     </el-tree>
     <div class=" btn-group">
       <el-button @click="warrantClose">取消</el-button>
-      <el-button type="primary">授权</el-button>
+      <el-button type="primary"
+                 @click="warrant">授权</el-button>
     </div>
   </div>
 </template>
@@ -41,11 +42,16 @@ export default {
     }
   },
   methods: {
+    // 关闭授权drawer
     warrantClose () {
-      // console.log(this.$parent)
-      // this.$parent.manualCloseDrawer()
       this.$emit('warrantClose')
     },
+    // 授权
+    warrant () {
+      // 授权回调结束后，关闭drawer
+      this.$emit('warrantClose', false)
+    },
+    // 搜索
     filterNode (value, data) {
       if (!value) return true
       return data.label.indexOf(value) !== -1

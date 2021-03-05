@@ -208,8 +208,9 @@ export default {
       })
     },
     // 角色授权抽屉-close
-    warrantClose () {
-      this.$refs.warrant.manualCloseDrawer()
+    warrantClose (isShowConfirm) {
+      // 调用手动关闭drawer
+      this.$refs.warrant.manualCloseDrawer(isShowConfirm)
     }
   }
 }

@@ -1,25 +1,15 @@
 export const columnsData = (h, $this) => [{
-  dataKey: '_index',
-  title: '序号',
-  align: 'center',
-  width: 80
+  dataKey: 'staffName',
+  title: '姓名',
+  width: 190
 }, {
-  dataKey: 'shop_name',
-  title: '店铺名称'
+  dataKey: 'staffId',
+  title: '工号',
+  width: 330
 }, {
-  dataKey: 'shop_url',
-  title: '店铺链接'
-}, {
-  dataKey: 'seller_type',
-  title: '店铺类型'
-}, {
-  dataKey: 'update_time',
-  title: '更新时间'
+  dataKey: 'dept',
+  title: '部门'
 },
-// {
-//   dataKey: 'update_by',
-//   title: '更新人'
-// },
 {
   dataKey: 'operate',
   title: '操作',

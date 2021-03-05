@@ -2,105 +2,39 @@
   <el-dialog :title="modalTitle"
              :top="offestTop"
              :destroy-on-close="true"
+             :close-on-click-modal="false"
              :visible.sync="modalShow"
-             width="800px"
+             width="438px"
+             custom-class="custom-dialog"
              :before-close="modalCancel">
     <el-form :model="modalForm"
              :rules="modalFormRules"
-             ref="moadlForm">
-      <el-form-item label="店铺名称："
-                    prop="shop_name"
-                    label-width="110px">
+             ref="moadlForm"
+             label-width="82px">
+      <el-form-item label="姓名："
+                    prop="shop_name">
         <el-input v-model="modalForm.shop_name"
-                  placeholder="请输入店铺名称"
+                  placeholder="请输入姓名"
                   maxlength=50
                   :disabled="disabled"
                   autocomplete="off">
         </el-input>
       </el-form-item>
-      <div class="clearfix">
-        <el-col :span="12">
-          <el-form-item label="店铺user_id："
-                        prop="user_id"
-                        label-width="110px">
-            <el-input v-model="modalForm.user_id"
-                      maxlength=20
-                      placeholder="请输入店铺user_id"
-                      autocomplete="off">
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="店铺shop_id："
-                        prop="shop_id"
-                        label-width="110px">
-            <el-input v-model="modalForm.shop_id"
-                      maxlength=20
-                      placeholder="请输入店铺shop_id"
-                      autocomplete="off">
-            </el-input>
-          </el-form-item>
-        </el-col>
-      </div>
-      <div class="clearfix">
-        <el-col :span="12">
-          <el-form-item label="店铺类型："
-                        prop="seller_type"
-                        label-width="110px">
-            <el-select v-model="modalForm.seller_type"
-                       popper-class="dialog-select"
-                       :disabled="disabled"
-                       placeholder="请选择店铺类型">
-              <el-option v-for="item in sellerType"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="店铺归属："
-                        prop="is_owner"
-                        label-width="110px">
-            <el-select v-model="modalForm.is_owner"
-                       popper-class="dialog-select"
-                       placeholder="请选择店铺归属">
-              <el-option v-for="item in shopOwner"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </div>
+      <el-form-item label="工号："
+                    prop="shop_url">
+        <el-input v-model="modalForm.shop_url"
+                  placeholder="请输入工号"
+                  maxlength=100
+                  autocomplete="off">
+        </el-input>
+      </el-form-item>
       <el-form-item label="店铺链接："
-                    prop="shop_url"
-                    label-width="110px">
+                    prop="shop_url">
         <el-input v-model="modalForm.shop_url"
                   placeholder="请输入店铺链接"
                   maxlength=100
                   autocomplete="off">
         </el-input>
-      </el-form-item>
-      <el-form-item label="品牌："
-                    prop="select_brand"
-                    label-width="110px">
-        <el-transfer v-model="modalForm.select_brand"
-                     filterable
-                     filter-placeholder="请输入品牌名称"
-                     :filter-method="filterMethod"
-                     :titles="['未选择品牌', '已选择品牌']"
-                     :data="brandArr">
-          <span slot-scope="{ option }">
-            <el-tooltip effect="dark"
-                        :content="option.label"
-                        placement="left">
-              <span>{{option.label}}</span>
-            </el-tooltip>
-          </span>
-        </el-transfer>
       </el-form-item>
     </el-form>
     <div slot="footer"
@@ -124,7 +58,7 @@ export default {
     },
     offestTop: {
       type: String,
-      default: '50px'
+      default: '60px'
     },
     modalShow: {
       type: Boolean,
@@ -133,10 +67,6 @@ export default {
     },
     addEditId: {
       type: [String, Number],
-      required: true
-    },
-    brandArr: {
-      type: Array,
       required: true
     }
   },

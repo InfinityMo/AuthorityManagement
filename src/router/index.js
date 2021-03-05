@@ -47,6 +47,21 @@ const routes = [
     ]
   },
   {
+    path: '/department',
+    name: 'Department',
+    meta: { title: '' },
+    component: baseLayout,
+    redirect: '/deptManage',
+    children: [
+      {
+        path: 'deptManage',
+        name: 'DeptManage',
+        meta: { title: '部门管理' },
+        component: () => import('@/views/department/index.vue')
+      }
+    ]
+  },
+  {
     path: '/shop',
     name: 'Shop',
     meta: { title: '' },

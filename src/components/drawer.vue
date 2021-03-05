@@ -43,8 +43,8 @@ export default {
   },
   methods: {
     // 手动关闭drawer
-    manualCloseDrawer () {
-      if (!this.wrapperClosable) {
+    manualCloseDrawer (isShowConfirm = true) {
+      if (isShowConfirm) {
         this.$confirm('还有未保存的数据，确定关闭吗？', '提示', {
           customClass: 'drawer-message-box'
         }).then(_ => {
