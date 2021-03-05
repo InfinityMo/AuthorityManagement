@@ -69,7 +69,7 @@ export default {
         }).then(_ => {
           done()
         }).catch(_ => {
-          done()
+          // done()
         })
       } else {
         done()

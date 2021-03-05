@@ -35,7 +35,7 @@
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <!-- 系统信息  -->
+    <!-- 查看系统信息弹窗  -->
     <DialogView modalTitle="系统信息"
                 :viewId="viewId"
                 :modalShow="viewShow"
@@ -43,6 +43,13 @@
                 v-if="viewShow"
                 @viewModalCancel="viewModalCancel"
                 @openRoleDrawer="openRoleDrawer" />
+    <!-- 编辑系统信息弹窗 -->
+    <DialogEdit modalTitle="编辑系统"
+                :viewId="viewId"
+                :modalShow="editSystemShow"
+                v-if="editSystemShow"
+                @viewModalCancel="editModalCancel" />
+    <!-- 查看角色信息 -->
     <Drawer :wrapperClosable="true"
             width="366px"
             :title="roleTitle"
@@ -52,6 +59,7 @@
         <roleContent :roleId="roleId" />
       </div>
     </Drawer>
+    <!-- 角色授权弹窗 -->
     <DialogWarrant modalTitle="角色授权"
                    :viewId="viewId"
                    :modalShow="warrantShow"
@@ -60,6 +68,7 @@
                    @viewModalCancel="warrantModalCancel"
                    @openRoleDrawer="openRoleDrawer"
                    @openWarrantDrawer="openWarrantDrawer" />
+    <!-- 角色授权drawer -->
     <Drawer :wrapperClosable="false"
             width="310px"
             v-if="warrantDrawer"
@@ -75,37 +84,36 @@
 <script>
 import tableMixin from '@/mixins/dealTable'
 import { columnsData } from './columnsData.js'
-import DialogView from './dialogView'
-import DialogWarrant from './dialogWarrant'
-import { tableSearchForm } from './searchForm'
-import roleContent from './roleContent'
-import warrant from './warrant'
+import DialogView from './dialogDrawer/dialogView'
+import DialogEdit from './dialogDrawer/DialogEdit'
+import DialogWarrant from './dialogDrawer/dialogWarrant'
+// import { tableSearchForm } from './searchForm'
+import roleContent from './dialogDrawer/roleContent'
+import warrant from './dialogDrawer/warrant'
 export default {
   mixins: [tableMixin],
-  components: { DialogView, DialogWarrant, roleContent, warrant },
+  components: { DialogView, DialogEdit, DialogWarrant, roleContent, warrant },
   data () {
     return {
-      searchForm: JSON.parse(JSON.stringify(tableSearchForm)),
+      searchForm: JSON.parse(JSON.stringify({})),
       queryFrom: { RowGuid: '' },
       columns: columnsData(this.$createElement, this),
-      tableData: [
-        {
-          id: '8n2h95n324',
-          systemName: '权限管理系统',
-          systemIdent: '8baef6123fda7egh4',
-          systemDesc: 'thelian的权限管理系统',
-          updateTime: '2020-01-30 18:08:09'
-        }
+      tableData: [{
+        id: '8n2h95n324',
+        systemName: '权限管理系统',
+        systemIdent: '8baef6123fda7egh4',
+        systemDesc: 'thelian的权限管理系统',
+        updateTime: '2020-01-30 18:08:09'
+      }
       ],
-      roleTitle: '',
-      roleId: '',
-      modalShow: false,
+      roleTitle: '', // 角色信息名
+      roleId: '', // 角色ID
+      viewShow: false, // 查看系统信息弹窗
+      editSystemShow: false, // 编辑系统弹窗
       warrantShow: false, // 角色授权弹窗
       warrantDrawer: false, // 角色授权抽屉
-      viewShow: false,
-      drawerShow: false,
-      viewId: '',
-      addEditId: '' // 编辑时存在id，新增时id为空
+      drawerShow: false, // 出现drawer时控制弹窗的层级
+      viewId: '' // 当前点击的系统id
     }
   },
   created () {
@@ -159,9 +167,13 @@ export default {
       this.drawerShow = false
       this.warrantDrawer = false
     },
-    // 编辑
+    // 编辑系统信息
     editMoadl (scoped) {
-
+      this.editSystemShow = true
+    },
+    // 编辑系统信息弹窗关闭
+    editModalCancel () {
+      this.editSystemShow = false
     },
     // 删除
     deleteHandle (scoped) {

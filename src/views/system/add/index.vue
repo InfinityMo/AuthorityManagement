@@ -1,6 +1,7 @@
 <template>
   <div class="page">
-    <div class="add-wrap">
+    <div class="add-wrap"
+         :class="{'systemEdit':isEditStep}">
       <Step :stepsData="stepsData"
             class="step"
             :active='active' />
@@ -9,10 +10,12 @@
                   @stepOneFinsh="stepOneFinsh"
                   @isConfigMenu="isConfigMenu"
                   v-show="active===0" />
-        <step-two @stepTwo="stepTwo"
+        <step-two :class="{'step-two-edit':isEditStep}"
+                  @stepTwo="stepTwo"
                   @stepTwoBack="stepTwoBack"
                   v-show="active===1" />
         <step-three v-show="active===2"
+                    :isEditStep="isEditStep"
                     @stepThreeContinue="stepThreeContinue" />
       </div>
     </div>
@@ -25,6 +28,16 @@ import StepTwo from './steps/stepTwo'
 import StepThree from './steps/stepThree'
 import { createUUID } from '@/common/utils/funcStore'
 export default {
+  props: {
+    systemId: {
+      type: [String, Number],
+      default: ''
+    },
+    isEditStep: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     Step,
     StepOne,
@@ -43,6 +56,7 @@ export default {
   },
   created () {
     // this.getSelects()
+    console.log(this.isEditStep)
   },
 
   methods: {

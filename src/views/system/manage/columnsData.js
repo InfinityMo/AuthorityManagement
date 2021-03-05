@@ -40,7 +40,7 @@ export const columnsData = (h, $this) => [{
     )
   }
 }]
-
+// 角色授权表单
 export const roleColumnsData = (h, $this) => [{
   dataKey: 'roleName',
   title: '角色名',

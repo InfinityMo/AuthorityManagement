@@ -71,7 +71,7 @@ export default [
   {
     pId: '3',
     pTitle: '部门管理',
-    icon: 'icon-staff-16',
+    icon: 'icon-dept-16',
     pPath: '/department/deptManage'
   },
   {

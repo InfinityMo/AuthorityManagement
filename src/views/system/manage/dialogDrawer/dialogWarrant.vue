@@ -13,7 +13,7 @@
   </el-dialog>
 </template>
 <script>
-import { roleColumnsData } from './columnsData.js'
+import { roleColumnsData } from '../columnsData'
 import tableMixin from '@/mixins/dealTable'
 export default {
   mixins: [tableMixin],

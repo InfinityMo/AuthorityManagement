@@ -1,5 +1,5 @@
 <template>
-  <div class="copyright">© {{nowYear}} 上海联恩贸易发展有限公司. All rights reserved.</div>
+  <div class="copyright">© {{nowYear}} 上海联恩商钥互联网科技股份有限公司. All rights reserved.</div>
 </template>
 <script>
 export default {

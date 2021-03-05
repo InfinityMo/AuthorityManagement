@@ -3,11 +3,9 @@
        v-show="bottomShow">
     <div class="btn-group">
       <el-button type="primary"
-                 @click="saveHandle"
-                 plain>保存</el-button>
-      <el-button type="primary"
-                 @click="addHandle">
-        <icon type="icon-add-white-14"
+                 @click="saveHandle">保存</el-button>
+      <el-button @click="addHandle">
+        <icon type="icon-add-green-14"
               :padding="[0,5,0,0]" />新增角色
       </el-button>
     </div>

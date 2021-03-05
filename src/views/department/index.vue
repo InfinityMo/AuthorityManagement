@@ -38,7 +38,6 @@
     <div class="table-wrap">
 
     </div>
-
   </div>
 </template>
 <script>
