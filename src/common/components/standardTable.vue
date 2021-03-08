@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-table :data="dealData"
+              :row-key="randomKey"
               class="standard-table">
       <el-table-column v-for="column in columns"
                        :key="column.dataKey"
@@ -51,7 +52,7 @@
   </div>
 </template>
 <script>
-// import { deepClone } from '@/common/utils/funcStore'
+import { createUUID } from '@/common/utils/funcStore'
 import operate from './operate'
 export default {
   components: { operate },
@@ -94,6 +95,7 @@ export default {
     }
   },
   computed: {
+
     dealData () {
       const isIndex = this.columns.some((item, index) => {
         return item.dataKey === '_index'
@@ -111,6 +113,9 @@ export default {
   },
   mounted () { },
   methods: {
+    randomKey () {
+      return createUUID()
+    },
     handleSizeChange (pageSize) {
       this.pageChange.pageSize = pageSize
       // 页数大小发生变化时，手动将当前页设置为1

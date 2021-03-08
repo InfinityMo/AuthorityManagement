@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     fileList () {
-      console.log(this.fileList)
+      // console.log(this.fileList)
     }
   },
   methods: {

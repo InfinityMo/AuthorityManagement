@@ -5,6 +5,7 @@
       <el-input class="filter-input"
                 placeholder="请输入部门名或员工名进行筛选"
                 prefix-icon="el-icon-search"
+                clearable
                 v-model="filterText">
       </el-input>
     </div>

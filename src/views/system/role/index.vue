@@ -37,7 +37,7 @@
                label-width="82px">
         <div class="dynamic-item"
              v-for="(dynamicItem, index) in dynamicForm.dynamicData"
-             :key="index">
+             :key="dynamicItem.dynamicId">
           <icon class="delete-icon"
                 type="icon-delete-17"
                 :hover="true"
@@ -152,8 +152,8 @@ export default {
     // this.getSelects()
   },
   mounted () {
-    console.log(this.$route)
-    console.log(this.$route.params.id)
+    // console.log(this.$route)
+    // console.log(this.$route.params.id)
     // this.getTableData() // 获取列表数据
   },
   methods: {
@@ -202,7 +202,10 @@ export default {
         const targetPowers = target.powers.filter(i => i.id === row.id)[0]
         if (targetPowers) {
           // debugger
-          targetPowers[type] = !targetPowers[type]
+          this.$nextTick(() => {
+            targetPowers[type] = !targetPowers[type]
+          })
+
           // switch (type) {
           //   case '1':
           //     // targetPowers.
@@ -252,24 +255,47 @@ export default {
     selectChange (value, dynamicId) {
       const target = this.dynamicForm.dynamicData.filter(i => i.dynamicId === dynamicId)[0]
       if (target) {
-        target.powers = []
+        // target.powers = []
         value.map(i => {
           const option = this.powerAllPages.filter(j => j.value === i)[0]
           if (option) {
-            target.powers.push({
-              dynamicId: dynamicId,
-              id: option.value,
-              menuName: option.label,
-              view: true,
-              edit: false,
-              upload: false,
-              downLoad: false,
-              add: false,
-              delete: false
-            })
+            if (target.powers.filter(k => k.id === option.value).length <= 0) {
+              target.powers.push({
+                dynamicId: dynamicId,
+                id: option.value,
+                menuName: option.label,
+                view: true,
+                edit: false,
+                upload: false,
+                downLoad: false,
+                add: false,
+                delete: false
+              })
+            }
           }
         })
+        // 去重power
+        // console.log(target.powers)
+        this.unique(target.powers, value)
       }
+    },
+    unique (arr, option) {
+      arr.map((i, index) => {
+        if (!option.includes(i.id)) {
+          arr.splice(index, 1)
+        }
+      })
+      // // debugger
+      // const obj = {}
+      // arr = arr.reduce((item, next) => {
+      //   // debugger
+      //   // console.log(obj[next.uniqueKey])
+      //   // eslint-disable-next-line no-unused-expressions
+      //   obj[next[uniqueKey]] ? '' : obj[next[uniqueKey]] = next[uniqueKey] && item.push(next)
+      //   console.log(obj)
+      //   return item
+      // }, [])
+      // // return arr.filter((item,index)=>arr.indexOf(item.))
     },
     // 删除类目
     deleteItem (id) {
