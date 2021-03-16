@@ -1,10 +1,10 @@
 export const columnsData = (h, $this) => [{
-  dataKey: 'shop_name',
+  dataKey: 'shopName',
   title: '店铺名称',
   align: 'left',
   width: 240
 }, {
-  dataKey: 'shop_url',
+  dataKey: 'shopUrl',
   title: '店铺链接',
   align: 'left'
 },

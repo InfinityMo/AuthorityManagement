@@ -7,16 +7,16 @@
              :before-close="modalCancel">
     <div class="content-wrap">
       <ul class="info-name">
-        <li class="flex"><label>系统名称：</label><span>{{systemInfo.sysName}}</span></li>
-        <li class="flex"><label>系统描述：</label><span>{{systemInfo.sysDesc}}</span></li>
-        <li class="flex"><label>系统标识：</label><span>{{systemInfo.sysIdentify}}</span></li>
+        <li class="flex"><label>系统名称：</label><span>{{systemInfo.systemName}}</span></li>
+        <li class="flex"><label>系统描述：</label><span>{{systemInfo.systemDesc}}</span></li>
+        <li class="flex"><label>系统标识：</label><span>{{systemInfo.systemIdent}}</span></li>
         <li class="flex"><label>系统角色：</label>
           <ol class="flex role">
-            <li v-for="(item,index) in systemInfo.sysRole"
+            <li v-for="(item,index) in systemInfo.systemRole"
                 :key="index"
                 @click="roleClickHandle(item.roleId,item.roleName)">
               <span>{{item.roleName}}</span>
-              <i v-show="index!==systemInfo.sysRole.length-1">、</i>
+              <i v-show="index!==systemInfo.systemRole.length-1">、</i>
             </li>
           </ol>
         </li>
@@ -60,10 +60,10 @@ export default {
   data () {
     return {
       systemInfo: {
-        sysName: '联恩小店后台系统',
-        sysDesc: '该系统用来管理联恩小店小程序的所有信息，包括商品信息，用户信息，签到信息，积分系统，登陆系统等其他系统',
-        sysIdentify: '7en423frjuirw2r4232nrewrw',
-        sysRole: [
+        systemName: '联恩小店后台系统',
+        systemDesc: '该系统用来管理联恩小店小程序的所有信息，包括商品信息，用户信息，签到信息，积分系统，登陆系统等其他系统',
+        systemIdent: '7en423frjuirw2r4232nrewrw',
+        systemRole: [
           { roleName: '上传专员', roleId: 1 },
           { roleName: '数据编辑专员', roleId: 2 },
           { roleName: '表格下载专员', roleId: 3 },
@@ -85,9 +85,6 @@ export default {
       // eslint-disable-next-line no-unused-vars
       const data2 = [{
         name: '联恩小店后台系统',
-        // label: {
-        //   offset: [-60, 0]
-        // },
         children: [{ // 子集
           name: '系统信息管理',
           children: [{ // 子集

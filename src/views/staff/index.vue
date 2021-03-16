@@ -52,7 +52,6 @@
     </div>
     <Dialog :modalTitle="modalTitle"
             :addEditId="addEditId"
-            :brandArr="brandArr"
             v-if="modalShow"
             :modalShow="modalShow"
             @modalCancel="modalCancel"
@@ -72,23 +71,13 @@ export default {
     return {
       tipContent: '',
       searchForm: queryForm,
-      queryFrom: { RowGuid: '' },
+      queryFrom: { ...queryForm },
       columns: columnsData(this.$createElement, this),
       tableData: [],
       selectOption: [],
       modalTitle: '', // 弹窗的名称
       modalShow: false,
-      addEditId: '', // 编辑时存在id，新增时id为空
-      brandArr: [] // 弹窗品牌穿梭框数据
-    }
-  },
-  watch: {
-    'searchForm.RowGuid' (newVal, oldVal) {
-      if (newVal.length && newVal.length > 0) {
-        this.tipContent = this.selectOption.filter(item => item.value === this.searchForm.RowGuid[0])[0].label
-      } else {
-        this.tipContent = ''
-      }
+      addEditId: '' // 编辑时存在id，新增时id为空
     }
   },
   created () {
@@ -124,7 +113,7 @@ export default {
         this.modalShow = true
         const { row } = scoped
         this.addEditId = row.RowGuid
-        this.modalTitle = '编辑店铺'
+        this.modalTitle = '编辑员工'
       })
     },
     // modal确认

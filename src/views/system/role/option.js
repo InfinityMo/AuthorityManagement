@@ -2,23 +2,23 @@ export const options = [{
   value: '1',
   label: '权限管理系统',
   children: [{
-    value: '1-1',
+    value: '2',
     label: '编辑专员'
   }, {
-    value: '1-2',
+    value: '3',
     label: '上传专员'
   }, {
-    value: '1-3',
+    value: '4',
     label: '检测专员'
   }]
 }, {
-  value: '2',
+  value: '6',
   label: '联恩数据营销推广系统',
   children: [{
-    value: '2-1',
+    value: '7',
     label: '上传权限'
   }, {
-    value: '2-2',
+    value: '8',
     label: '下载权限'
   }]
 }]

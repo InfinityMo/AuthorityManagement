@@ -1,7 +1,7 @@
 <template>
   <div class="drawer-inner-wrap content-wrap">
     <ol class="role-info">
-      <li class="flex"><label>名称：</label><span>{{roleData.name}}</span></li>
+      <li class="flex"><label>名称：</label><span>{{roleData.roleName}}</span></li>
       <li class="flex"><label>说明：</label><span>{{roleData.remark}}</span></li>
     </ol>
     <p class="power">权限：</p>
@@ -23,7 +23,7 @@ export default {
   data () {
     return {
       roleData: {
-        name: '上传专员',
+        roleName: '上传专员',
         remark: '该角色可对系统所有页面进行编辑，该角色可对系统所有页面进行编辑，该角色可对系统所有页面进行编辑，该角色可对系统所有页面进'
       },
       menuPowers: [{

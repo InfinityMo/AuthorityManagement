@@ -10,7 +10,7 @@
       </el-input>
     </div>
     <el-tree class="filter-tree"
-             :data="data"
+             :data="warrantData"
              :props="defaultProps"
              show-checkbox
              default-expand-all
@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-import { treeData } from '@/common/formData/form'
+import { treeData as warrantData } from '@/common/formData/form'
 export default {
   data () {
     return {
@@ -34,7 +34,7 @@ export default {
         children: 'children',
         label: 'label'
       },
-      data: treeData
+      warrantData: warrantData
     }
   },
   watch: {

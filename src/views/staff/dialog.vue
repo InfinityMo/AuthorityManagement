@@ -12,29 +12,28 @@
              ref="moadlForm"
              label-width="82px">
       <el-form-item label="姓名："
-                    prop="shop_name">
-        <el-input v-model="modalForm.shop_name"
+                    prop="staffName">
+        <el-input v-model="modalForm.staffName"
                   placeholder="请输入姓名"
-                  maxlength=50
-                  :disabled="disabled"
+                  maxlength=15
                   autocomplete="off">
         </el-input>
       </el-form-item>
       <el-form-item label="工号："
-                    prop="shop_url">
-        <el-input v-model="modalForm.shop_url"
+                    prop="staffId">
+        <el-input v-model="modalForm.staffId"
                   placeholder="请输入工号"
-                  maxlength=100
+                  maxlength=8
                   autocomplete="off">
         </el-input>
       </el-form-item>
-      <el-form-item label="店铺链接："
-                    prop="shop_url">
-        <el-input v-model="modalForm.shop_url"
-                  placeholder="请输入店铺链接"
-                  maxlength=100
-                  autocomplete="off">
-        </el-input>
+      <el-form-item label="部门："
+                    prop="staffDept">
+        <el-cascader :options="selectOption"
+                     v-model="modalForm.staffDept"
+                     :props="{ multiple: true, checkStrictly: true }"
+                     clearable>
+        </el-cascader>
       </el-form-item>
     </el-form>
     <div slot="footer"
@@ -75,25 +74,7 @@ export default {
       modalForm: JSON.parse(JSON.stringify(modalForm)),
       modalFormRules: modalFormRules,
       disabled: false,
-      selectOption: [],
-      sellerType: [
-        {
-          value: 1,
-          label: '天猫'
-        }, {
-          value: 2,
-          label: '淘宝'
-        }
-      ],
-      shopOwner: [
-        {
-          value: 1,
-          label: '内部'
-        }, {
-          value: 0,
-          label: '外部'
-        }
-      ]
+      selectOption: []
     }
   },
   created () {

@@ -1,76 +1,99 @@
 <template>
   <div class="page">
-    <div class="search-wrap">
-      <el-form class="search-form-inline"
-               :model="queryFrom"
-               ref="searchForm"
-               label-width="70px">
-        <el-col :span="8">
-          <el-form-item label="工号："
-                        label-width="42px"
-                        prop="staffId">
-            <el-input v-model="queryFrom.staffId"
-                      placeholder="请输入工号"
-                      autocomplete="off">
+    <div class="table-wrap dept-wrap">
+      <el-tree :data="deptData"
+               :key="randomKey"
+               node-key="id"
+               default-expand-all
+               :expand-on-click-node="false">
+        <!-- <span class="custom-tree-node"
+              slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <span>
+            <el-button type="text"
+                       size="mini"
+                       @click="() => append(data)">
+              Append
+            </el-button>
+            <el-button type="text"
+                       size="mini"
+                       @click="() => remove(node, data)">
+              Delete
+            </el-button>
+          </span>
+        </span> -->
+        <span class="custom-tree-node flex flex-item-center"
+              slot-scope="{ node, data }">
+          <span v-if="!data.isEdit"
+                @dblclick="dbClickHandle(node,data)">{{ node.label }}</span>
+          <span v-else
+                class="edit-input">
+            <el-input v-model="deptName"
+                      v-focus
+                      placeholder="请输入部门名称">
             </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="姓名："
-                        label-width="42px"
-                        prop="staffName">
-            <el-input v-model="queryFrom.staffName"
-                      placeholder="请输入姓名"
-                      autocomplete="off">
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8"
-                class="search-btn">
-          <el-form-item>
-            <el-button @click="_resetForm('searchForm')">重置</el-button>
-            <el-button type="primary"
-                       @click="queryHandel">查询</el-button>
-          </el-form-item>
-        </el-col>
-      </el-form>
-    </div>
-    <div class="table-wrap">
-
+            <el-link :disabled="!deptName"
+                     class="confirm-btn"
+                     :underline="false">确定</el-link>
+            <!-- <span class="confirm-btn" ></span> -->
+            <el-link class="cancel-btn"
+                     @click="cancel(node,data)"
+                     :underline="false">取消</el-link>
+            <!-- <span class="confirm-btn"
+                  ></span> -->
+          </span>
+          <span class="icon-operate"
+                :class="{'hide-operate':data.isEdit}">
+            <icon type="icon-add-green-14"
+                  :padding="[0,0,0,0]"
+                  @click.native="() => append(node, data)" />
+            <icon type="icon-delete-14"
+                  :padding="[0,0,0,10]"
+                  @click.native="() => remove(node, data)" />
+          </span>
+        </span>
+      </el-tree>
     </div>
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/dealTable'
-import { columnsData } from './columnsData.js'
-import { queryForm } from './searchForm'
-
+import { createUUID } from '@/common/utils/funcStore'
 export default {
   mixins: [tableMixin],
 
   data () {
     return {
-      tipContent: '',
-      searchForm: queryForm,
-      queryFrom: { RowGuid: '' },
-      columns: columnsData(this.$createElement, this),
-      tableData: [],
-      selectOption: [],
-      modalTitle: '', // 弹窗的名称
-      modalShow: false,
-      addEditId: '', // 编辑时存在id，新增时id为空
-      brandArr: [] // 弹窗品牌穿梭框数据
+      deptName: '',
+      randomKey: 1,
+      deptData: [
+        {
+          id: '1',
+          label: '上海联恩',
+          children: [
+            {
+              id: '2',
+              label: '管理决策中心'
+            },
+            {
+              id: '3',
+              label: '数据开发部',
+              children: [
+                {
+                  id: '4',
+                  label: '开发组'
+                }, {
+                  id: '5',
+                  label: '数据组'
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   },
-  watch: {
-    'searchForm.RowGuid' (newVal, oldVal) {
-      if (newVal.length && newVal.length > 0) {
-        this.tipContent = this.selectOption.filter(item => item.value === this.searchForm.RowGuid[0])[0].label
-      } else {
-        this.tipContent = ''
-      }
-    }
-  },
+
   created () {
     // this.getSelects()
   },
@@ -78,78 +101,58 @@ export default {
     // this.getTableData() // 获取列表数据
   },
   methods: {
-    getTableData () {
-      this.$request.post('./')
+    dbClickHandle (node, data) {
+      this.cancelAllEdit()
+      data.isEdit = true
+      this.deptName = data.label
+      this.randomKey = createUUID()
     },
-    getSelects () {
-      this._getSelectData(1).then(res => {
-        this.selectOption = res
-      }) // 获取下拉框数据
+    cancelAllEdit () {
+      this.resetState(this.deptData)
+    },
+    resetState (arr) {
+      arr.forEach(i => {
+        if (i.children && i.children.length > 0) {
+          this.resetState(i.children)
+        }
+        delete i.isEdit
+      })
+    },
+    cancel (node, data) {
+      // data.isEdit = false
+      delete data.isEdit
+      if (data.isAdd) {
+        this.remove(node, data)
+      }
+      this.randomKey = createUUID()
+    },
+    append (node, data) {
+      let id = 10000
+      const newChild = { id: id++, label: 'ccc', isEdit: true, isAdd: true, children: [] }
+      if (!data.children) {
+        this.$set(data, 'children', [])
+      }
+      data.children.push(newChild)
+      this.randomKey = createUUID()
     },
 
-    // 新增
-    addHandle () {
-      this.addEditId = ''
-      this.modalTitle = '新增员工'
-      this.modalShow = true
-    },
-    editMoadl (scoped) {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.modalShow = true
-        const { row } = scoped
-        this.addEditId = row.RowGuid
-        this.modalTitle = '编辑店铺'
-      })
-    },
-    // modal确认
-    modalConfirm () {
-      this.modalShow = false
-      this.brandArr = []
-      this.selectOption = []
-      this.getTableData()
-      this.getSelects()
-    },
-    // moadl关闭
-    modalCancel () {
-      this.brandArr = []
-      this.modalShow = false
-    },
-    deleteHandle (scoped) {
-      const { row } = scoped
-      this.$request.post('/shopDelete', {
-        RowGuid: row.RowGuid
-      }).then(res => {
-        if (res.errorCode === 1) {
-          this.$message.success('删除成功')
-          // 删除时需判断是不是最后一页
-          this._isLastPage()
-          this.getTableData()
-        } else {
-          this.$message.error('删除失败')
-        }
-      })
-    },
-    queryHandel () {
-      this.queryFrom = {
-        RowGuid: this.searchForm.RowGuid[0] || ''
+    remove (node, data) {
+      const parent = node.parent
+      const children = parent.data.children || parent.data
+      const index = children.findIndex(d => d.id === data.id)
+      children.splice(index, 1)
+    }
+  },
+  directives: {
+    focus: {
+      inserted (el, binding, vnode) {
+        el.querySelector('input').focus()
       }
-      this.getTableData()
-    },
-    // 表格分页的变化
-    tableChange (changeParams) {
-      this.PAGING.pageSize = changeParams.pageSize
-      this.PAGING.pageNum = changeParams.pageNum
-      this.getTableData()
     }
   }
 }
 </script>
 <style lang="less" scoped>
 @import "~@/common/styles/page-table";
+@import "./index";
 </style>

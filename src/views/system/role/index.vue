@@ -2,10 +2,12 @@
   <div class="page">
     <div class="search-wrap">
       <el-form class="search-form-inline"
-               ref="searchForm">
-        <el-col :span="9">
+               :model="queryFrom"
+               ref="searchForm"
+               label-width="70px">
+        <el-col :span="8">
           <el-form-item label="系统选择：">
-            <el-cascader :options="options"
+            <el-cascader :options="systemOptions"
                          placeholder="请选择系统"
                          v-model="systemValue"
                          :props="{ multiple: true }"
@@ -18,7 +20,7 @@
       </el-form>
     </div>
     <div class="table-wrap">
-      <div class="flex-between-center table-info">
+      <div class="flex-between-center table-info table-role">
         <h4>角色编辑</h4>
         <div>
           <el-button @click="saveHandle"
@@ -33,6 +35,7 @@
       </div>
       <el-form :model="dynamicForm"
                class="dynamic-form"
+               v-if="dynamicForm.dynamicData.length>0"
                ref="dynamicForm"
                label-width="82px">
         <div class="dynamic-item"
@@ -93,6 +96,13 @@
                           :columns="columns" />
         </div>
       </el-form>
+      <div v-else
+           class="flex-item-center flex-justify-center">
+        <div class="no-role">
+          <icon type="icon-no-data-36" />
+          <p>暂无角色，请添加角色</p>
+        </div>
+      </div>
     </div>
     <checkBottom :bottomShow="bottomShow"
                  @bottomSave="saveHandle"
@@ -110,9 +120,10 @@ export default {
   components: { checkBottom },
   data () {
     return {
+      queryFrom: {},
       columns: columnsData(this.$createElement, this),
       systemValue: [],
-      options: options,
+      systemOptions: options,
       shareScopeEnd: [],
       powerAllPages: powerAllPages,
       // dynamicForm: {
@@ -205,12 +216,6 @@ export default {
           this.$nextTick(() => {
             targetPowers[type] = !targetPowers[type]
           })
-
-          // switch (type) {
-          //   case '1':
-          //     // targetPowers.
-          //     break
-          // }
         }
       }
     },

@@ -104,8 +104,7 @@ export default {
         systemIdent: '8baef6123fda7egh4',
         systemDesc: 'thelian的权限管理系统',
         updateTime: '2020-01-30 18:08:09'
-      }
-      ],
+      }],
       roleTitle: '', // 角色信息名
       roleId: '', // 角色ID
       viewShow: false, // 查看系统信息弹窗
